@@ -1,0 +1,15 @@
+html 
+    head 
+        title=`${title}`
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+    body 
+         .form-wrapper
+            a(href="/") Return to the homepage
+            p Name: #{name}
+            p Specie: #{specie}
+            p Age: #{age}
+            form(method="POST")
+                label(for="newVal") New name
+                input(type="text" name="newVal" required)
+                input(type="submit" value="Submit")

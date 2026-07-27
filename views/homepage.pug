@@ -1,0 +1,13 @@
+html 
+    head 
+        title=`${title}`
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+    body
+        h1 Custom Objects 
+        .cards
+            each pet in data
+                .card
+                    h2.card__name #{pet.properties.name} 
+                    p Specie: #{pet.properties.specie}
+                    p Age: #{pet.properties.age}
