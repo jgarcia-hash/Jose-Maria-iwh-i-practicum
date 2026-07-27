@@ -35,76 +35,61 @@ app.get('/', async (req, res) => {
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 
 app.get('/update-cobj', async (req, res) => {
-    const name = req.query.name;
-    const getPet = `https://api.hubapi.com/crm/objects/2026-03/2-66508491/${name}?idProperty=name&properties=name,age,specie`
-
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    }
+    const title = 'Update Custom Object Form | Integrating With HubSpot I Practicum'
 
     try {
-        const resp = await axios.get(getPet, { headers });
-        const data = resp.data;
-        res.render('updates', {
-            title: 'Update Custom Object Form | Integrating With HubSpot I Practicum',
-            name: data.properties.name, 
-            specie: data.properties.specie, 
-            age: data.properties.age
-        });
+        res.render('updates', {title: title});
     } catch (error) {
         console.error(error);
-        
     }
 })
 
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 
-// * Code for Route 3 goes here
+app.post('/update-cobj', async (req, res) => {
 
-/** 
-* * This is sample code to give you a reference for how you should structure your calls. 
+    const uniqueVal = req.body.name;
+    const nAge = req.body.age;
+    const nSpecie = req.body.specie;
 
-* * App.get sample
-app.get('/contacts', async (req, res) => {
-    const contacts = 'https://api.hubspot.com/crm/v3/objects/contacts';
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    }
-    try {
-        const resp = await axios.get(contacts, { headers });
-        const data = resp.data.results;
-        res.render('contacts', { title: 'Contacts | HubSpot APIs', data });      
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-* * App.post sample
-app.post('/update', async (req, res) => {
     const update = {
-        properties: {
-            "favorite_book": req.body.newVal
+        properties : {
+            "name": uniqueVal,
+            "age" : nAge,
+            "specie" : nSpecie
         }
-    }
-
-    const email = req.query.email;
-    const updateContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email`;
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
     };
 
-    try { 
-        await axios.patch(updateContact, update, { headers } );
-        res.redirect('back');
-    } catch(err) {
-        console.error(err);
+    const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
     }
 
-});
-*/
+    try {
+        // Actualizar si existe
+        const updateUrl = `https://api.hubapi.com/crm/objects/2026-03/2-66508491/${uniqueVal}?idProperty=name`;
+
+        await axios.patch(updateUrl, update, { headers });
+        console.log("Registro actualizado");
+    } catch (error) {
+        if (error.response && error.response.status == 404){
+            console.log("Registro inexistente, creando...");
+            try {
+                const createUrl = `https://api.hubapi.com/crm/objects/2026-03/2-66508491`;
+                await axios.post(createUrl, update, { headers });
+                console.log("Exito!");
+                
+            } catch (error) {
+                console.error(error);
+                
+            }
+            
+        } else {
+            console.error(error);
+        }
+    }
+    res.redirect('/');
+})
 
 
 // * Localhost

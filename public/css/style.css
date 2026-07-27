@@ -8,6 +8,54 @@ body, * {
 
 h1 {
     margin: 1rem;
+    font-weight: bold;
+}
+
+.page-link {
+    display: inline-block;
+    margin: 0 1rem 1rem;
+}
+
+.table-wrapper {
+    margin: 0 1rem 2rem;
+    overflow-x: auto;
+}
+
+.items-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px;
+    table-layout: fixed;
+}
+
+.items-table th,
+.items-table td {
+    border: 1px solid #b7b7b7;
+    padding: 0.9rem 0.75rem;
+    text-align: left;
+    background-color: #fff;
+    font-size: 1.15rem;
+}
+
+.items-table th {
+    background-color: #f6bcc9;
+    font-weight: 700;
+    text-align: center;
+}
+
+.items-table th:nth-child(1),
+.items-table td:nth-child(1) {
+    width: 46%;
+}
+
+.items-table th:nth-child(2),
+.items-table td:nth-child(2) {
+    width: 30%;
+}
+
+.items-table th:nth-child(3),
+.items-table td:nth-child(3) {
+    width: 24%;
 }
 
 .cards {
